@@ -28,7 +28,7 @@ def common_options(func):
             "--output",
             help="Output directory",
             type=click.Path(dir_okay=True, writable=True, readable=True),
-            default="LAGOON.out",
+            default="results",
             show_default=True,
         ),
         click.option(
