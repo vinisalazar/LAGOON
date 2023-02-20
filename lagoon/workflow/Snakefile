@@ -1,5 +1,13 @@
-configfile: "config/config.yml"
+configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
 
+# Concatenate Snakemake's own log file with the master log file
+onsuccess:
+    shell("cat {log} >> " + config['log'])
+
+onerror:
+    shell("cat {log} >> " + config['log'])
+
+outTouch = os.path.join(config['output'], config['input'])
 
 def get_files(config):
     import glob
@@ -24,7 +32,7 @@ def get_attrib_files(config):
 # ==================================== GET CONFIG / GET FILES ==================================== #
 
 try:
-    FASTA = get_files(config["fasta"])
+    FASTA = get_files(config["input"])
     CAT_F = f"results/{config['concat_file']}"
     DDB = f"results/{config['diamond_database']}"
 except:
@@ -120,8 +128,18 @@ ABUND_MAT = expand(
 
 # ================================================================================================ #
 
+# Snaketool stuff
+# Mark target rules
+target_rules = []
+def targetRule(fn):
+    assert fn.__name__.startswith('__')
+    target_rules.append(fn.__name__[2:])
+    return fn
+
+# ================================================================================================ #
 
 # ALL RULES
+@targetRule
 rule all:
     input:
         CAT_F,
@@ -151,6 +169,8 @@ if FASTA:
             "logs/cat.log",
         benchmark:
             "benchmarks/cat.bench"
+        conda:
+            "envs/biopython.yaml"
         script:
             "scripts/cat.py"
 
@@ -164,38 +184,11 @@ if FASTA:
             "logs/diamond_db.log",
         benchmark:
             "benchmarks/diamond_db.bench"
-        run:
-            import subprocess
-            import time
-            from subprocess import DEVNULL
+        conda:
+            "envs/diamond.yaml"
+        script:
+            "scripts/diamond_makedb.py"
 
-            with open(str(log), "w") as l:
-                s = time.time()
-                l.write("*** Getting command ***\n")
-                command_client = [
-                    "diamond-aligner",
-                    "makedb",
-                    "--in",
-                    str(input),
-                    "--db",
-                    str(output),
-                ]
-                command_cluster = [
-                    "diamond",
-                    "makedb",
-                    "--in",
-                    str(input),
-                    "--db",
-                    str(output),
-                ]
-                l.write("*** Creation of Diamond database ***\n")
-                try:
-                    subprocess.call(command_client, stdout=DEVNULL)
-
-                except:
-                    subprocess.call(command_cluster, stdout=DEVNULL)
-                e = time.time()
-                l.write(f"Database created in {round(e - s,2)} seconds")
 
             # Carries out a blastp
 
@@ -209,6 +202,8 @@ if FASTA:
             "logs/diamond_blastp.log",
         benchmark:
             "benchmarks/diamond_blatp.bench"
+        conda:
+            "envs/diamond.yaml"
         run:
             import subprocess
             import time
@@ -399,5 +394,7 @@ rule network:
         identity=PIDENT,
         eval=EVAL,
         indices=IDX,
+    conda:
+        "envs/igraph.yaml"
     script:
         "scripts/network.py"

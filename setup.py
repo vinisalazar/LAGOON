@@ -6,8 +6,8 @@ def get_version():
     with open(
         os.path.join(
             os.path.dirname(os.path.realpath(__file__)),
-            "LAGOON",
-            "LAGOON.VERSION",
+            "lagoon",
+            "lagoon.VERSION",
         )
     ) as f:
         return f.readline().strip()
@@ -50,7 +50,7 @@ setup(
     author="Dylan Klein",
     author_email="klein.dylan@outlook.com",
     data_files=get_data_files(),
-    py_modules=["LAGOON"],
+    py_modules=["lagoon"],
     install_requires=[
         "snakemake>=7.14.0",
         "pyyaml>=6.0",
@@ -58,7 +58,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "LAGOON=LAGOON.__main__:main"
+            "LAGOON=lagoon.__main__:main"
         ]
     },
     include_package_data=True,

@@ -28,7 +28,7 @@ def common_options(func):
             "--output",
             help="Output directory",
             type=click.Path(dir_okay=True, writable=True, readable=True),
-            default="lagoon_wf.out",
+            default="LAGOON.out",
             show_default=True,
         ),
         click.option(
@@ -68,7 +68,7 @@ def common_options(func):
         ),
         click.option(
             "--log",
-            default="lagoon_wf.log",
+            default="LAGOON.log",
             callback=default_to_output,
             hidden=True,
         ),
@@ -87,24 +87,24 @@ def cli():
     """LArGe cOmparative Omics Networks (LAGOON) is designed to treat large omics data. It has been made by the unit of environmental genomics of the Muséum National d'Histoire Naturelle based in Paris, FRANCE.
     \b
     For more options, run:
-    lagoon_wf command --help"""
+    LAGOON command --help"""
     pass
 
 
 help_msg_extra = """
 \b
 CLUSTER EXECUTION:
-lagoon_wf run ... --profile [profile]
+LAGOON run ... --profile [profile]
 For information on Snakemake profiles see:
 https://snakemake.readthedocs.io/en/stable/executing/cli.html#profiles
 \b
 RUN EXAMPLES:
-Required:           lagoon_wf run --input [file]
-Specify threads:    lagoon_wf run ... --threads [threads]
-Disable conda:      lagoon_wf run ... --no-use-conda 
-Change defaults:    lagoon_wf run ... --snake-default="-k --nolock"
-Add Snakemake args: lagoon_wf run ... --dry-run --keep-going --touch
-Specify targets:    lagoon_wf run ... all print_targets
+Required:           LAGOON run --input [file]
+Specify threads:    LAGOON run ... --threads [threads]
+Disable conda:      LAGOON run ... --no-use-conda 
+Change defaults:    LAGOON run ... --snake-default="-k --nolock"
+Add Snakemake args: LAGOON run ... --dry-run --keep-going --touch
+Specify targets:    LAGOON run ... all print_targets
 Available targets:
     all             Run everything (default)
     print_targets   List available targets
