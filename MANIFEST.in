@@ -1,0 +1,4 @@
+include LAGOON/LAGOON.LICENSE
+include LAGOON/LAGOON.CITATION
+include LAGOON/LAGOON.VERSION
+recursive-include LAGOON *
