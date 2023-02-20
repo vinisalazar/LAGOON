@@ -3,5 +3,5 @@ channels:
   - bioconda
 dependencies:
   - igraph
-  - igraph-python
+  - python-igraph
   - pandas
