@@ -50,17 +50,10 @@ def get_fname(names, files, i_dict):
     for n in names:
         iname = i_dict[str(n)]
         for file in files:
-            if len(files) == 1:
-                if file not in fn_dict:
-                    fn_dict[file] = set()
-                fn_dict[file].add(n)
+            if file not in fn_dict:
+                fn_dict[file] = set()
+            fn_dict[file].add(n)
 
-            elif "METDB" in file.upper():
-                if file not in fn_dict:
-                    fn_dict[file] = set()
-                i = iname.split("-")[:2]
-                if i[0] in file and i[1] in file:
-                    fn_dict[file].add(n)
     return fn_dict
 
 

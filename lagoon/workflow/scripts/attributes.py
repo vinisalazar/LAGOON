@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 # =========================================== Modules ============================================ #
 
 import os
@@ -22,7 +23,7 @@ def adapt_row(row, columns, i_dict):
     Adapt incomplete row with columns header
     """
 
-    if row[columns[0]] not in i_dict:
+    if row[columns[0]] not in i_dict.keys():
         return False, False, False
     n = i_dict[row[columns[0]]]
     c = columns[1:]
@@ -122,10 +123,6 @@ def save_attributes(at_dict, columns, outputs):
     """
     Saves attributes in a file
     """
-    path = "./results/attributes/"
-    if not os.path.exists(path):
-        os.mkdir(path)
-
     for k, v in at_dict.items():
         output = search_output(k, outputs)
         with open(output, "w") as f:
