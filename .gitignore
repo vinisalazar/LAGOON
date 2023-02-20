@@ -1,2 +1,5 @@
 .idea
 *.code-workspace
+*.egg-info/
+**/__pycache__/
+tr/
