@@ -56,10 +56,10 @@ EVAL = config["filtration"]["evalue"]
 if not EVAL:
     EVAL = ["1e-50"]
 ISOL = config["isolated"]
-IDX = f"index/{config['indices']}"
+IDX = f"results/index/{config['indices']}"
 DIS = config["distribution"]
 
-DISTRIB = expand("distribution/{distribution}.pdf", distribution=DIS)
+DISTRIB = expand("results/distribution/{distribution}.pdf", distribution=DIS)
 
 FILTR = expand(
     "results/diamond_ssn_{overlap}_{identity}_{eval}",
@@ -166,9 +166,9 @@ if FASTA:
             CAT_F,
             IDX,
         log:
-            "logs/cat.log",
+            "results/logs/cat.log",
         benchmark:
-            "benchmarks/cat.bench"
+            "results/benchmarks/cat.bench"
         conda:
             "envs/biopython.yaml"
         script:
@@ -181,9 +181,9 @@ if FASTA:
         output:
             DDB,
         log:
-            "logs/diamond_db.log",
+            "results/logs/diamond_db.log",
         benchmark:
-            "benchmarks/diamond_db.bench"
+            "results/benchmarks/diamond_db.bench"
         conda:
             "envs/diamond.yaml"
         script:
@@ -196,9 +196,9 @@ if FASTA:
         output:
             DBT,
         log:
-            "logs/diamond_blastp.log",
+            "results/logs/diamond_blastp.log",
         benchmark:
-            "benchmarks/diamond_blatp.bench"
+            "results/benchmarks/diamond_blatp.bench"
         conda:
             "envs/diamond.yaml"
         script:
@@ -213,9 +213,11 @@ if DISTRIB:
         output:
             DISTRIB,
         log:
-            "logs/distribution.log",
+            "results/logs/distribution.log",
         benchmark:
-            "benchmarks/distribution.bench"
+            "results/benchmarks/distribution.bench"
+        conda:
+            "envs/matplotlib.yaml"
         script:
             "scripts/distribution.py"
 
@@ -232,9 +234,9 @@ rule filter:
         filtr=FILTR,
         stats=FILTR_S,
     log:
-        "logs/filter.log",
+        "results/logs/filter.log",
     benchmark:
-        "benchmarks/filter.bench"
+        "results/benchmarks/filter.bench"
     script:
         "scripts/filter.py"
 
@@ -249,9 +251,9 @@ if config["conversion"]:
             EDGES,
             VERTI,
         log:
-            "logs/diamond2graph.log",
+            "results/logs/diamond2graph.log",
         benchmark:
-            "benchmarks/diamond2graph.bench"
+            "results/benchmarks/diamond2graph.bench"
         script:
             "scripts/diamond2graph.py"
 
@@ -264,9 +266,9 @@ rule attributes:
     output:
         ATTRIB,
     log:
-        "logs/attributes.log",
+        "results/logs/attributes.log",
     benchmark:
-        "benchmarks/attributes.bench"
+        "results/benchmarks/attributes.bench"
     params:
         columns=COL,
     script:
@@ -284,9 +286,9 @@ if not config["attributes"]:
         output:
             VER_ATTRIB,
         log:
-            "logs/add_attributes.log",
+            "results/logs/add_attributes.log",
         benchmark:
-            "benchmarks/add_attributes.bench"
+            "results/benchmarks/add_attributes.bench"
         params:
             columns=COL,
         script:
@@ -303,9 +305,9 @@ rule network:
         homscore=HOM_SCORE,
         abund_mat=ABUND_MAT,
     log:
-        "logs/network.log",
+        "results/logs/network.log",
     benchmark:
-        "benchmarks/network.bench"
+        "results/benchmarks/network.bench"
     params:
         neighbours=NGB,
         columns=COL,
