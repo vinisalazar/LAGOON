@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # =========================================== Modules ============================================ #
 
 from collections import Counter

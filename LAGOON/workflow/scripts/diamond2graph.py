@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 def read_file(file):
     """
     Reads a file and retrieves its content line by line
